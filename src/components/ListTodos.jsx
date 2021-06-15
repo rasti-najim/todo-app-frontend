@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import EditTodo from "./EditTodo";
+
 export default function ListTodos() {
   const [todos, setTodos] = useState([]);
 
@@ -50,7 +52,9 @@ export default function ListTodos() {
             return (
               <tr key={todo.todo_id}>
                 <td>{todo.description}</td>
-                <td>Edit</td>
+                <td>
+                  <EditTodo todo={todo} />
+                </td>
                 <td>
                   <DeleteButton onClick={() => deleteTodo(todo.todo_id)}>
                     Delete
