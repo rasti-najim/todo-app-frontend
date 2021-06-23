@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 import EditTodo from "./EditTodo";
 
@@ -8,22 +9,28 @@ export default function ListTodos() {
 
   const getTodos = async () => {
     try {
-      const response = await fetch("http://localhost:5000/todos");
-      const jsonData = await response.json();
-      setTodos(jsonData);
+      const response = await axios.get("http://localhost:5000/api/todos", {
+        headers: { "auth-token": localStorage.getItem("auth-token") },
+      });
+      setTodos(response.data);
+      console.log(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 
   const deleteTodo = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/todos/${id}`, {
-        method: "DELETE",
-      });
+      const response = await axios.delete(
+        `http://localhost:5000/api/todos/${id}`,
+        {
+          headers: { "auth-token": localStorage.getItem("auth-token") },
+        }
+      );
       setTodos(todos.filter((todo) => todo.todo_id !== id));
+      console.log(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 

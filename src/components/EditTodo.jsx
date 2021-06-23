@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 export default function EditTodo({ todo }) {
   const [description, setDescription] = useState(todo.description);
@@ -8,19 +9,18 @@ export default function EditTodo({ todo }) {
     e.preventDefault();
     try {
       const body = { description };
-      const response = await fetch(
-        `http://localhost:5000/todos/${todo.todo_id}`,
+      const response = await axios.put(
+        `http://localhost:5000/api/todos/${todo.todo_id}`,
+        body,
         {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
+          headers: { "auth-token": localStorage.getItem("auth-token") },
         }
       );
 
-      console.log(response);
+      console.log(response.data);
       window.location = "/";
     } catch (error) {
-      console.log(error.message);
+      console.log(error.response.data);
     }
   };
 

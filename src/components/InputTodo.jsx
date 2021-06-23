@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 export default function InputTodo() {
   const [description, setDescription] = useState("");
@@ -9,16 +10,16 @@ export default function InputTodo() {
     e.preventDefault();
     try {
       const body = { description };
-      const response = await fetch("http://localhost:5000/todos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      const response = await axios.post(
+        `http://localhost:5000/api/todos`,
+        body,
+        { headers: { "auth-token": localStorage.getItem("auth-token") } }
+      );
 
-      console.log(response);
+      console.log(response.data);
       window.location = "/";
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
     }
   };
 
